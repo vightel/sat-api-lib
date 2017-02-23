@@ -234,6 +234,11 @@ Search.prototype.sentinel = function (callback) {
   return this.simple(callback);
 };
 
+Search.prototype.eo1 = function (callback) {
+  this.satelliteName = 'eo1';
+  return this.simple(callback);
+};
+
 Search.prototype.simple = function (callback) {
   var self = this;
   var searchParams;

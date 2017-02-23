@@ -27,6 +27,16 @@ var legacyParams = function (params) {
   };
 };
 
+var wildQuery = function (field, value) {
+  var query = {
+    wildcard: {}
+  };
+
+  query.wildcard[field] = value
+
+  return query;
+};
+
 var termQuery = function (field, value) {
   var query = {
     match: {}
@@ -225,13 +235,22 @@ module.exports = function (params) {
   // Term search
   for (var i = 0; i < termFields.length; i++) {
     if (_.has(params, termFields[i].parameter)) {
-      queries.push(
-        termQuery(
-          termFields[i].field,
-          params[termFields[i].parameter]
-        )
-      );
+ 	   if( /[*?]+/.test(params[termFields[i].parameter]) ) {
+            queries.push(
+               wildQuery(
+                 termFields[i].field,
+                 params[termFields[i].parameter]))
+ 	   } else {
+	      queries.push(
+	        wildQuery(
+	          termFields[i].field,
+	          params[termFields[i].parameter]
+	        )
+	      );
+	  }
     }
+	// PGC missing
+	params = _.omit(params, termFields[i].parameter)
   }
 
   // For all items that were not matched pass the key to the term query

@@ -1,4 +1,4 @@
-process.env.ES_HOST = 'link-to-my-elasticsearh.com';
+//process.env.ES_HOST = 'link-to-my-elasticsearh.com';
 
 var express = require('express');
 var api = require('../index.js');
